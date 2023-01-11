@@ -1,0 +1,8 @@
+Pinging Website:
+https://charlie-ward.info
+
+
+Ping at: 15:25:23 to: https://charlie-ward.info {
+	Status Code: 200
+	Response Time: 0.116695
+}
