@@ -5,7 +5,12 @@ from datetime import datetime
 responseCode = ""
 responseTime = ""
 
-File = open("Responses.txt", "a")
+now = datetime.now()
+current_time = now.strftime("%H:%M:%S")
+
+FileTitle = f"{current_time}.txt"
+
+File = open(FileTitle, "a")
 File.truncate(0)
 File.close()
 
@@ -37,14 +42,14 @@ def ping(url):
 		print(f"Response Time: {response.elapsed.total_seconds()} seconds")
 		responseCode = response.status_code
 		responseTime = response.elapsed.total_seconds()
-		File = open("Responses.txt", "a")
+		File = open(FileTitle, "a")
 		now = datetime.now()
 		current_time = now.strftime("%H:%M:%S")
 		pingSuccessFileWrite(File, current_time, url, responseCode, responseTime)
 		File.close()
 	except requests.exceptions.RequestException as e:
 		print(f"Request failed: {e}")
-		File = open("Responses.txt", "a")
+		File = open(FileTitle, "a")
 		now = datetime.now()
 		current_time = now.strftime("%H:%M:%S")
 		ResponseText = (f"Request failed: {e}")
@@ -54,15 +59,18 @@ def ping(url):
 
 print("INITAL SETUP")
 
-print("Please input a website to ping including http:// or https://")
-websiteToPing = input()
+print("Please input a website to ping")
+websiteToPingBeforePrefix = input("www.")
 print("Please enter how frequently you want to ping the website. If you want it to only happen once please input 0")
 timeBetween = int(input())
 
-File = open("Responses.txt", "a")
+websiteToPingWithFilePrefix = f'www.{websiteToPingBeforePrefix}'
+websiteToPingWithCodePrefix = f'http://{websiteToPingBeforePrefix}'
+
+File = open(FileTitle, "a")
 File.write("Pinging Website:")
 fileNewLine(File)
-File.write(websiteToPing)
+File.write(websiteToPingWithFilePrefix)
 for i in range(3):
 	fileNewLine(File)
 File.close()
@@ -70,8 +78,8 @@ File.close()
 print("STARTING PINGS")
 
 if timeBetween == 0:
-	ping(websiteToPing)
+	ping(websiteToPingWithCodePrefix)
 else:
 	while True:
-		ping(websiteToPing)
+		ping(websiteToPingWithFilePrefix)
 		time.sleep(timeBetween)
